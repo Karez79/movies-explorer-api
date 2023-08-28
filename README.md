@@ -5,3 +5,5 @@
 IP-адрес 84.201.129.191
 
 Backend [https://api.ivan.nomoredomainsicu.ru]
+
+Шаблон: dark-5

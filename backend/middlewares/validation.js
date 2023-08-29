@@ -1,4 +1,28 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
+const ApiError = require('../exceptions/api-error');
+
+const urlValidator = (value) => {
+  if (!validator.isURL(value)) {
+    throw ApiError.BadRequest('Некорректный URL');
+  }
+  return value;
+};
+
+const signInValidation = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+});
+
+const signUpValidation = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+    name: Joi.string().required().min(2).max(30),
+  }),
+});
 
 const updateProfileValidation = celebrate({
   body: Joi.object().keys({
@@ -14,9 +38,9 @@ const createMovieValidation = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().uri(),
-    trailerLink: Joi.string().required().uri(),
-    thumbnail: Joi.string().required().uri(),
+    image: Joi.string().required().custom(urlValidator),
+    trailerLink: Joi.string().required().custom(urlValidator),
+    thumbnail: Joi.string().required().custom(urlValidator),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
@@ -33,4 +57,6 @@ module.exports = {
   updateProfileValidation,
   createMovieValidation,
   deleteMovieValidation,
+  signInValidation,
+  signUpValidation,
 };

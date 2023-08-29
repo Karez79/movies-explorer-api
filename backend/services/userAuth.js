@@ -16,8 +16,7 @@ class UserService {
           email,
           password: hashedPass,
         })
-        .then((user) => tokenService.generateToken({ _id: user._id }))
-        .then((token) => token))
+        .then((user) => user))
       .catch((e) => {
         if (e.code === 11000) {
           throw ApiError.Conflict('Пользователь с таким email уже существует');

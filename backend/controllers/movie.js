@@ -3,9 +3,6 @@ const ApiError = require('../exceptions/api-error');
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .orFail(() => {
-      next(ApiError.NotFound('Карточки не были найдены'));
-    })
     .then((movies) => res.send(movies))
     .catch((e) => {
       next(e);
